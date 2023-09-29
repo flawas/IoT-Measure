@@ -8,6 +8,9 @@
 
 require 'config.php';
 
+
+
+
 $db_connect = mysqli_connect(DATABASE_HOST, DATABASE_USERNAME, DATABASE_PASSWORD, DATABASE_NAME) or die(mysql_error());
 $sel_data = mysqli_query($db_connect, "SELECT * FROM `data` ORDER BY `data`.`id` DESC");
 
@@ -28,6 +31,9 @@ if ($row_cnt > 0) {
     $show_table = "display: none;";
     echo 'Error: No values in database!';
 }
+
+
+include_once("includes/head.php");
 
 ?>
 <html>
@@ -91,4 +97,7 @@ if ($row_cnt > 0) {
             </tr>
         </table>
     </body>
-</html>
+
+    <?php
+    include_once("includes/footer.php");
+    ?>
