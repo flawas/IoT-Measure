@@ -2,7 +2,7 @@
 
 $db_connect = mysqli_connect(DATABASE_HOST, DATABASE_USERNAME, DATABASE_PASSWORD, DATABASE_NAME) or die(mysql_error());
 $today = date("Y-m-d");
-$sel_data = mysqli_query($db_connect, "select * from data where ttn_timestamp like '$today%' and dev_id='eui-a8404181f186f808'");
+$sel_data = mysqli_query($db_connect, "select * from data where ttn_timestamp like '$today%' and dev_id='eui-a8404181f186f808 order by id DESC'");
 $mysql_row = mysqli_fetch_array($sel_data);
 $row_cnt = mysqli_num_rows($sel_data);
 
