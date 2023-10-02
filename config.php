@@ -12,7 +12,3 @@ define('DATABASE_HOST', 'localhost');
 define('WRITE_LOG', true); //Enable log.txt File
 
 ?>
-
-
-
-
