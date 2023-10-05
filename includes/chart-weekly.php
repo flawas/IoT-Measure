@@ -18,14 +18,11 @@ $devices = mysqli_query($db_connect, "Select * from sensor");
     </select>
     </div>
     <div class="col-2">
-      <input class="btn btn-secondary" type='submit' name="submit" value='submit'>
+      <input class="btn btn-secondary" type='submit' name="submit" value='Anzeigen'>
     </div>
   </div>
   </form>
 </div>
-
-
-
 
 
 <div>

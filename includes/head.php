@@ -12,9 +12,9 @@
 
       <ul class="nav nav-pills">
         <li class="nav-item"><a href="index.php" class="nav-link" aria-current="page">Home</a></li>
-        <li class="nav-item"><a href="chartview.php" class="nav-link">Wochenübersicht</a></li>
-        <!--<li class="nav-item"><a href="#" class="nav-link">Pricing</a></li>
-        <li class="nav-item"><a href="#" class="nav-link">FAQs</a></li>
+        <li class="nav-item"><a href="chartview-daily.php" class="nav-link">Tagesübersicht</a></li>
+        <li class="nav-item"><a href="chartview-weekly.php" class="nav-link">Wochenübersicht</a></li>
+        <!--<li class="nav-item"><a href="#" class="nav-link">FAQs</a></li>
         <li class="nav-item"><a href="#" class="nav-link">About</a></li>-->
       </ul>
     </header>
