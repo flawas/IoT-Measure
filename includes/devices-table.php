@@ -10,7 +10,7 @@ $devices = mysqli_query($db_connect, "Select * from sensor");
   <div class="row">
   <div class="col-2">
         <input type="date" class="form-control" id="date" name="date" value="">
-        <label for="date" class="form-text">Datum</label>
+        <label for="date" class="form-text" value="">Datum</label>
     </div>
     <div class="col-2">
         <input type="number" class="form-control" id="numberOfLogs" name="numberOfLogs">

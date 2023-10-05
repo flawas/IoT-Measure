@@ -42,54 +42,40 @@ $todayMinusFour = date("Y-m-d", strtotime("-4 days"));
 $todayMinusFive = date("Y-m-d", strtotime("-5 days"));
 $todayMinusSix = date("Y-m-d", strtotime("-6 days"));
 
-$today_Data_temp = mysqli_query($db_connect, "SELECT round(avg(dev_value_2), 2) as average FROM data where ttn_timestamp like '$today%' and dev_id='$dev_id'");
+$today_Data_temp = mysqli_query($db_connect, "SELECT round(avg(dev_value_2), 2) as avg_temp, round(avg(dev_value_3), 2) as avg_hum FROM data where ttn_timestamp like '$today%' and dev_id='$dev_id'");
 $mysql_row = mysqli_fetch_array($today_Data_temp);
-$avgToday_temp = $mysql_row["average"];
-$today_Data_humidity = mysqli_query($db_connect, "SELECT round(avg(dev_value_3), 2) as average FROM data where ttn_timestamp like '$today%' and dev_id='$dev_id'");
-$mysql_row = mysqli_fetch_array($today_Data_humidity);
-$avgToday_humidity = $mysql_row["average"];
+$avgToday_temp = $mysql_row["avg_temp"];
+$avgToday_humidity = $mysql_row["avg_hum"];
 
-$todayMinusOne_Data_temp = mysqli_query($db_connect, "SELECT round(avg(dev_value_2), 2) as average FROM data where ttn_timestamp like '$todayMinusOne%' and dev_id='$dev_id'");
+$todayMinusOne_Data_temp = mysqli_query($db_connect, "SELECT round(avg(dev_value_2), 2) as avg_temp, round(avg(dev_value_3), 2) as avg_hum FROM data where ttn_timestamp like '$todayMinusOne%' and dev_id='$dev_id'");
 $mysql_row = mysqli_fetch_array($todayMinusOne_Data_temp);
-$avgTodayMinusOne_temp = $mysql_row["average"];
-$todayMinusOne_Data_humidity = mysqli_query($db_connect, "SELECT round(avg(dev_value_3), 2) as average FROM data where ttn_timestamp like '$todayMinusOne%' and dev_id='$dev_id'");
-$mysql_row = mysqli_fetch_array($todayMinusOne_Data_humidity);
-$avgTodayMinusOne_humidity = $mysql_row["average"];
+$avgTodayMinusOne_temp = $mysql_row["avg_temp"];
+$avgTodayMinusOne_humidity = $mysql_row["avg_hum"];
 
-$todayMinusTwo_Data_temp = mysqli_query($db_connect, "SELECT round(avg(dev_value_2), 2) as average FROM data where ttn_timestamp like '$todayMinusTwo%' and dev_id='$dev_id'");
+$todayMinusTwo_Data_temp = mysqli_query($db_connect, "SELECT round(avg(dev_value_2), 2) as avg_temp, round(avg(dev_value_3), 2) as avg_hum FROM data where ttn_timestamp like '$todayMinusTwo%' and dev_id='$dev_id'");
 $mysql_row = mysqli_fetch_array($todayMinusTwo_Data_temp);
-$avgTodayMinusTwo_temp = $mysql_row["average"];
-$todayMinusTwo_Data_humidity = mysqli_query($db_connect, "SELECT round(avg(dev_value_3), 2) as average FROM data where ttn_timestamp like '$todayMinusTwo%' and dev_id='$dev_id'");
-$mysql_row = mysqli_fetch_array($todayMinusTwo_Data_humidity);
-$avgTodayMinusTwo_humidity = $mysql_row["average"];
+$avgTodayMinusTwo_temp = $mysql_row["avg_temp"];
+$avgTodayMinusTwo_humidity = $mysql_row["avg_hum"];
 
-$todayMinusThree_Data_temp = mysqli_query($db_connect, "SELECT round(avg(dev_value_2), 2) as average FROM data where ttn_timestamp like '$todayMinusThree%' and dev_id='$dev_id'");
+$todayMinusThree_Data_temp = mysqli_query($db_connect, "SELECT round(avg(dev_value_2), 2) as avg_temp, round(avg(dev_value_3), 2) as avg_hum FROM data where ttn_timestamp like '$todayMinusThree%' and dev_id='$dev_id'");
 $mysql_row = mysqli_fetch_array($todayMinusThree_Data_temp);
-$avgTodayMinusThree_temp = $mysql_row["average"];
-$todayMinusThree_Data_humidity = mysqli_query($db_connect, "SELECT round(avg(dev_value_3), 2) as average FROM data where ttn_timestamp like '$todayMinusThree%' and dev_id='$dev_id'");
-$mysql_row = mysqli_fetch_array($todayMinusThree_Data_humidity);
-$avgTodayMinusThree_humidity = $mysql_row["average"];
+$avgTodayMinusThree_temp = $mysql_row["avg_temp"];
+$avgTodayMinusThree_humidity = $mysql_row["avg_hum"];
 
-$todayMinusFour_Data_temp = mysqli_query($db_connect, "SELECT round(avg(dev_value_2), 2) as average FROM data where ttn_timestamp like '$todayMinusFour%' and dev_id='$dev_id'");
+$todayMinusFour_Data_temp = mysqli_query($db_connect, "SELECT round(avg(dev_value_2), 2) as avg_temp, round(avg(dev_value_3), 2) as avg_hum FROM data where ttn_timestamp like '$todayMinusThree%' and dev_id='$dev_id'");
 $mysql_row = mysqli_fetch_array($todayMinusFour_Data_temp);
-$avgTodayMinusFour_temp = $mysql_row["average"];
-$todayMinusFour_Data_humidity = mysqli_query($db_connect, "SELECT round(avg(dev_value_3), 2) as average FROM data where ttn_timestamp like '$todayMinusFour%' and dev_id='$dev_id'");
-$mysql_row = mysqli_fetch_array($todayMinusFour_Data_humidity);
-$avgTodayMinusFour_humidity = $mysql_row["average"];
+$avgTodayMinusFour_temp = $mysql_row["avg_temp"];
+$avgTodayMinusFour_humidity = $mysql_row["avg_hum"];
 
-$todayMinusFive_Data_temp = mysqli_query($db_connect, "SELECT round(avg(dev_value_2), 2) as average FROM data where ttn_timestamp like '$todayMinusFive%' and dev_id='$dev_id'");
+$todayMinusFive_Data_temp = mysqli_query($db_connect, "SELECT round(avg(dev_value_2), 2) as avg_temp, round(avg(dev_value_3), 2) as avg_hum FROM data where ttn_timestamp like '$todayMinusFive%' and dev_id='$dev_id'");
 $mysql_row = mysqli_fetch_array($todayMinusFive_Data_temp);
-$avgTodayMinusFive_temp = $mysql_row["average"];
-$todayMinusFive_Data_humidity = mysqli_query($db_connect, "SELECT round(avg(dev_value_3), 2) as average FROM data where ttn_timestamp like '$todayMinusFive%' and dev_id='$dev_id'");
-$mysql_row = mysqli_fetch_array($todayMinusFive_Data_humidity);
-$avgTodayMinusFive_humidity = $mysql_row["average"];
+$avgTodayMinusFive_temp = $mysql_row["avg_temp"];
+$avgTodayMinusFive_humidity = $mysql_row["avg_hum"];
 
-$todayMinusSix_Data_temp = mysqli_query($db_connect, "SELECT round(avg(dev_value_2), 2) as average FROM data where ttn_timestamp like '$todayMinusSix%' and dev_id='$dev_id'");
+$todayMinusSix_Data_temp = mysqli_query($db_connect, "SELECT round(avg(dev_value_2), 2) as avg_temp, round(avg(dev_value_3), 2) as avg_hum FROM data where ttn_timestamp like '$todayMinusSix%' and dev_id='$dev_id'");
 $mysql_row = mysqli_fetch_array($todayMinusSix_Data_temp);
-$avgTodayMinusSix_temp = $mysql_row["average"];
-$todayMinusSix_Data_humidity = mysqli_query($db_connect, "SELECT round(avg(dev_value_3), 2) as average FROM data where ttn_timestamp like '$todayMinusSix%' and dev_id='$dev_id'");
-$mysql_row = mysqli_fetch_array($todayMinusSix_Data_humidity);
-$avgTodayMinusSix_humidity = $mysql_row["average"];
+$avgTodayMinusSix_temp = $mysql_row["avg_temp"];
+$avgTodayMinusSix_humidity = $mysql_row["avg_hum"];
 
 ?>
 
