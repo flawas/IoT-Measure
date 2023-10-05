@@ -8,11 +8,15 @@ $devices = mysqli_query($db_connect, "Select * from sensor");
 <div class="container text-center">
 <form method='GET'>
   <div class="row">
-    <div class="col-10">
+    <div class="col-2">
+        <input type="date" class="form-control" id="date" name="date" value="">
+    </div>
+    <div class="col-8"> 
     <select class="form-select" name="device-select">
+        <option name="choose" id="choose" value="choose">Bitte wählen</option>
       <?php
       foreach ($devices as $row){
-          ?><option name="device" value="<?php echo $row['dev_id']; ?>"><?php echo $row['dev_place']; ?></option><?php 
+          ?><option name="<?php echo $row['dev_id']; ?>" value="<?php echo $row['dev_id']; ?>" id="<?php echo $row['dev_id']; ?>"><?php echo $row['dev_place']; ?></option><?php 
       }
       ?>
     </select>
@@ -29,16 +33,13 @@ $devices = mysqli_query($db_connect, "Select * from sensor");
   <canvas id="chartDaily"></canvas>
 </div>
 
-
 <?php
-
 $dev_id = $_GET['device-select'];
+$today = $_GET['date'];
 
-$today = date("Y-m-d");
 $avgTemp = array();
 $avgHumidity = array();
 $hours = array("00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "17", "18", "19", "20", "21", "22", "23");
-
 
 foreach($hours as $hour){
     $searchLike = $today." ".$hour."%";
@@ -48,11 +49,23 @@ foreach($hours as $hour){
     $avgTemp[$hour] = $mysql_row["avg_temp"];
     $avgHumidity[$hour] = $mysql_row["avg_hum"];
 }
-
 ?>
 
-
 <script>
+const urlParams = new URL(window.location.toLocaleString()).searchParams;
+var date = urlParams.get('date');
+console.log(date);
+var device = urlParams.get('device-select');
+if(date != null) {
+    document.getElementById('date').value = date;
+} else {
+    document.getElementById('date').valueAsDate = new Date();
+}
+if(device != null) {
+    document.getElementById(device).setAttribute('selected', 'selected');
+} else {
+    document.getElementById('choose').setAttribute('selected', 'selected');
+}
 
   const ctx = document.getElementById('chartDaily');
 
