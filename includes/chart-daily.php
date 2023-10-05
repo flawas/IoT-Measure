@@ -6,20 +6,22 @@ $devices = mysqli_query($db_connect, "Select * from sensor");
 
 ?>
 <div class="container text-center">
-<form method='GET'>
+<form method='GET' onsubmit="return checkInput()">
   <div class="row">
     <div class="col-2">
         <input type="date" class="form-control" id="date" name="date" value="">
+        <label for="date" class="form-text">Datum</label>
     </div>
-    <div class="col-8"> 
-    <select class="form-select" name="device-select">
-        <option name="choose" id="choose" value="choose">Bitte wählen</option>
+    <div class="col-8">
+    <select class="form-select" name="device-select" id="device-select">
+        <option name="choose" id="choose" value="choose" >Bitte wählen</option>
       <?php
       foreach ($devices as $row){
           ?><option name="<?php echo $row['dev_id']; ?>" value="<?php echo $row['dev_id']; ?>" id="<?php echo $row['dev_id']; ?>"><?php echo $row['dev_place']; ?></option><?php 
       }
       ?>
     </select>
+    <label for="device-select" class="form-text">Sensor</label>
     </div>
     <div class="col-2">
       <input class="btn btn-secondary" type='submit' name="submit" value='Anzeigen'>
@@ -52,9 +54,18 @@ foreach($hours as $hour){
 ?>
 
 <script>
+function checkInput() {
+    if(document.getElementById('device-select').value == "choose") {
+        document.getElementById('device-select').setAttribute("class", "form-control is-invalid");
+        return false;
+    }
+    return true;
+}
+
+
+
 const urlParams = new URL(window.location.toLocaleString()).searchParams;
 var date = urlParams.get('date');
-console.log(date);
 var device = urlParams.get('device-select');
 if(date != null) {
     document.getElementById('date').value = date;

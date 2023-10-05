@@ -16,6 +16,7 @@ $devices = mysqli_query($db_connect, "Select * from sensor");
       }
       ?>
     </select>
+    <label for="device-select" class="form-text">Sensor</label>
     </div>
     <div class="col-2">
       <input class="btn btn-secondary" type='submit' name="submit" value='Anzeigen'>
