@@ -14,7 +14,7 @@ $devices = mysqli_query($db_connect, "Select * from sensor");
     </div>
     <div class="col-2">
         <input type="number" class="form-control" id="numberOfLogs" name="numberOfLogs">
-        <label for="numberOfLogs" class="form-text" max="100">Anzahl Log-Einträge</label>
+        <label for="numberOfLogs" class="form-text" max="100" value="">Anzahl Log-Einträge</label>
     </div>
     <div class="col-4">
     <select class="form-select" name="device-select" id="device-select">
