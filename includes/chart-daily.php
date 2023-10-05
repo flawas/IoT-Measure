@@ -21,7 +21,7 @@ $devices = mysqli_query($db_connect, "Select * from sensor");
       }
       ?>
     </select>
-    <label for="device-select" class="form-text">Sensor</label>
+    <label for="device-select" id="device-select-label"class="form-text">Sensor</label>
     </div>
     <div class="col-2">
       <input class="btn btn-secondary" type='submit' name="submit" value='Anzeigen'>
@@ -57,6 +57,8 @@ foreach($hours as $hour){
 function checkInput() {
     if(document.getElementById('device-select').value == "choose") {
         document.getElementById('device-select').setAttribute("class", "form-control is-invalid");
+        document.getElementById('device-select-label').setAttribute("class", "invalid-feedback");
+        document.getElementById('device-select-label').innerHTML = "Bitte Sensor auswählen";
         return false;
     }
     return true;
