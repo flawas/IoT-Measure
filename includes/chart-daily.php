@@ -34,14 +34,14 @@ $devices = mysqli_query($db_connect, "Select * from sensor");
 
 
 <div>
-  <canvas id="chartDaily"></canvas>
+  <canvas id="chartDaily"></canvas>-
 </div>
 
 <?php
 $dev_id = $_GET['device-select'];
 $today = $_GET['date'];
 
-$query = mysqli_query($db_connect, "SELECT datetime, dev_value_2 as temp1, dev_value_1 as temp2, dev_value_3 as hum FROM data where datetime like '2023-10-05%' and dev_id='$dev_id'");
+$query = mysqli_query($db_connect, "SELECT datetime, dev_value_2 as temp1, dev_value_1 as temp2, dev_value_3 as hum FROM data where datetime like '$today%' and dev_id='$dev_id'");
 if (mysqli_num_rows($query) > 0) {
   // output data of each row
   while($row = mysqli_fetch_assoc($query)) {
