@@ -51,8 +51,12 @@ function dbInputSlackNotification($devID, $humidity, $temperature1, $emperature2
         slack($data_row['dev_type'] . " ". $data_row['dev_place']. " hat festgestellt, dass die Luftfeuchtigkeit " . $humidity ."% beträgt - Bitte lüften!");
     }
 
-    if($humidity > SLACK_TEMPERATURE_THREESHOLD) {
-        slack($data_row['dev_type'] . " ". $data_row['dev_place']. " hat festgestellt, dass die Temperatur " . $humidity ." Grad Celsius beträgt!");
+    if($temperature1 > SLACK_TEMPERATURE_THREESHOLD) {
+        slack($data_row['dev_type'] . " ". $data_row['dev_place']. " hat festgestellt, dass die Temperatur " . $temperature1 ." Grad Celsius beträgt!");
+    }
+
+    if($temperature2 > SLACK_TEMPERATURE_THREESHOLD) {
+        slack($data_row['dev_type'] . " ". $data_row['dev_place']. " hat festgestellt, dass die Temperatur " . $temperature2 ." Grad Celsius beträgt!");
     }
 }
 
