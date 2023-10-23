@@ -41,7 +41,7 @@ function slack($txt) {
     }
 }
 
-function dbInputSlackNotification($devID, $humidity, $temperature1, $emperature2) {
+function dbInputSlackNotification($devID, $humidity, $temperature1, $temperature2) {
     $db_connect = mysqli_connect(DATABASE_HOST, DATABASE_USERNAME, DATABASE_PASSWORD, DATABASE_NAME) or die(mysql_error());
     $devices = mysqli_query($db_connect, "Select * from sensor where dev_id='$devID'");
     $data_row = mysqli_fetch_array($devices);
