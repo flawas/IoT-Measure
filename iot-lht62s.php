@@ -7,6 +7,7 @@
  */
 
 require 'config.php';
+include_once("includes/functions.php");
 
 $ttn_post = file('php://input');
 $data = json_decode($ttn_post[0]);
@@ -38,4 +39,7 @@ if (WRITE_LOG == true) {
     file_put_contents('log.txt', $ttn_post[0] . PHP_EOL, FILE_APPEND);
 }
 
+if(SLACK_ENABLED == TRUE) {
+    dbInputSlackNotification($ttn_dev_id, $sensor_humidity, $sensor_temperature, $sensor_temperature_2);
+}
 ?>
