@@ -34,7 +34,7 @@ $devices = mysqli_query($db_connect, "Select * from sensor");
 
 
 <div>
-  <canvas id="chartDaily"></canvas>-
+  <canvas id="chartDaily"></canvas>
 </div>
 
 <?php
