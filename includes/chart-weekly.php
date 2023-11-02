@@ -91,16 +91,16 @@ $avgTodayMinusSix_humidity = $mysql_row["avg_hum"];
   todayMinusTwo.setDate(todayMinusTwo.getDate() - 2);
 
   var todayMinusThree = new Date();
-  todayMinusThree.setDate(todayMinusTwo.getDate() - 3);
+  todayMinusThree.setDate(todayMinusThree.getDate() - 3);
 
   var todayMinusFour = new Date();
-  todayMinusFour.setDate(todayMinusTwo.getDate() - 4);
+  todayMinusFour.setDate(todayMinusFour.getDate() - 4);
 
   var todayMinusFive = new Date();
-  todayMinusFive.setDate(todayMinusTwo.getDate() - 5);
+  todayMinusFive.setDate(todayMinusFive.getDate() - 5);
 
   var todayMinusSix = new Date();
-  todayMinusSix.setDate(todayMinusTwo.getDate() - 6);
+  todayMinusSix.setDate(todayMinusSix.getDate() - 6);
 
   var days = new Array(7);
   days[0] = "Sonntag";
@@ -110,6 +110,7 @@ $avgTodayMinusSix_humidity = $mysql_row["avg_hum"];
   days[4] = "Donnerstag";
   days[5] = "Freitag";
   days[6] = "Samstag";
+
   var todayName = days[today.getDay()];
   var todayMinusOneName = days[todayMinusOne.getDay()];
   var todayMinusTwoName = days[todayMinusTwo.getDay()];
@@ -117,7 +118,6 @@ $avgTodayMinusSix_humidity = $mysql_row["avg_hum"];
   var todayMinusFourName = days[todayMinusFour.getDay()];
   var todayMinusFiveName = days[todayMinusFive.getDay()];
   var todayMinusSixName = days[todayMinusSix.getDay()];
-
 
   new Chart(ctx, {
     type: 'line',
