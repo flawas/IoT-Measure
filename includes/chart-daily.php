@@ -1,5 +1,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+
 
 <?php 
 
@@ -45,17 +47,30 @@ $query = mysqli_query($db_connect, "SELECT datetime, dev_value_2 as temp1, dev_v
 if (mysqli_num_rows($query) > 0) {
   // output data of each row
   while($row = mysqli_fetch_assoc($query)) {
-    $temps1 = $temps1 . $row["temp1"] . ",";
-    $temps2 = $temps2 . $row["temp2"] . ",";
-    $hum = $hum . $row["hum"] . ",";
-    $time = explode(" ",$row["datetime"]);
-    $dates = $dates  ."'" . $time[1] . "'" . ",";
+    $temp1 .= "{x: '".$row["datetime"]."', y: ".$row["temp1"]."},";
+    $temp2 .= "{x: '".$row["datetime"]."', y: ".$row["temp2"]."},";
+    $hum .= "{x: '".$row["datetime"]."', y: ".$row["hum"]."},";
   }
 }
-$finaltemps1 =  rtrim($temps1, ", ");
-$finaltemps2 =  rtrim($temps2, ", ");
+$finaltemps1 =  rtrim($temp1, ", ");
+$finaltemps2 =  rtrim($temp2, ", ");
 $finalhum =  rtrim($hum, ", ");
 $finaldates = rtrim($dates, ", ");
+
+
+$sensorvalues = mysqli_query($db_connect, "Select * from sensor WHERE dev_id='$dev_id'");
+$sensorrow = mysqli_fetch_assoc($sensorvalues);
+
+$forecast = mysqli_query($db_connect, "SELECT datetime, temperature as forecasttemp, humidity as forecasthum FROM data_openmeteo where datetime like '$today%'");
+if (mysqli_num_rows($forecast) > 0) {
+  // output data of each row
+  while($row = mysqli_fetch_assoc($forecast)) {
+    $forecasttime = explode(" ",$row["datetime"]);
+    $forecasthum .= "{x: '".$row["datetime"]."', y: ".$row["forecasthum"]."},";
+    $forecasttemp .= "{x: '".$row["datetime"]."', y: ".$row["forecasttemp"]."},";
+  }
+  $finalforecasttemp = rtrim($forecasttemp, ", ");
+}
 ?>
 
 <script>
@@ -90,34 +105,56 @@ if(device != null) {
   new Chart(ctx, {
     type: 'line',
     data: {
-      labels: [<?php echo $finaldates; ?>],
       datasets: [{
-        label: 'Temperatur 1',
+        label: '<?php echo $sensorrow['value_1']; ?>',
         data: [<?php echo $finaltemps1;?>],
-        borderWidth: 1
+        borderWidth: 1,
       },{
-        label: 'Temperatur 2',
+        label: '<?php echo $sensorrow['value_2']; ?>',
         data: [<?php echo $finaltemps2;?>],
-        borderWidth: 1
+        borderWidth: 1,
       }, {
-        label: 'Luftfeuchtigkeit',
+        label: '<?php echo $sensorrow['value_3']; ?>',
         data: [<?php echo $finalhum;?>],
-        borderWidth: 1
-      }]
+        borderWidth: 1,
+      } , {
+        label: 'Wettervorhersage Temperatur',
+        data: [<?php echo $forecasttemp;?>],
+        borderWidth: 1,
+      }, {
+        label: 'Wettervorhersage Luftfeuchtigkeit',
+        data: [<?php echo $forecasthum;?>],
+        borderWidth: 1,
+      }
+    ]
     },
     options: {
-      responsive: true,
-      x: {
-        type: 'time',
-        time: {
-          // Luxon format string
-          tooltipFormat: 'H:mm'
-        },
-      }, scales: {
-        y: {
-          beginAtZero: true
-        }
+       scales: {
+            x: {
+              type: 'time',
+              time: {
+                displayFormats: {
+                  hour: "HH:MM"
+                }
+              },
+              ticks: {
+                autoSkip: true,
+                maxTicksLimit: 30,
+                },
+                display: true,
+                scaleLabel: {
+                    display: true,
+                    labelString: "Point"
+                }
+            },
+            y: {
+                display: true,
+                scaleLabel: {
+                    display: true,
+                    labelString: "Value"
+                }
+            }
+       }
       }
-    },
   });
 </script>
