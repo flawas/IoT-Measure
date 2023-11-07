@@ -17,7 +17,7 @@ $result = $db_connect->query($sql)->fetch_all(MYSQLI_ASSOC);
 foreach ($result as $row){
   $row_device_id = $row['dev_id'];
   // Sensor-Daten abfragen
-  $sensor_data = mysqli_query($db_connect, "select * from data where dev_id='$row_device_id' order by id DESC limit 2");
+  $sensor_data = mysqli_query($db_connect, "select * from data where dev_id='$row_device_id' order by id DESC limit 1");
   $sensor_row = mysqli_fetch_array($sensor_data);
 
   ?>
@@ -26,8 +26,17 @@ foreach ($result as $row){
       <div class="card-header"><?php echo $row['dev_type'];?></div>
         <div class="card-body">
           <h5 class="card-title"><?php echo $row['dev_place'];?></h5>
-          <p class="card-text"><?php echo $sensor_row['dev_value_2'];?> Grad Celsius</p>
-          <p class="card-text"><?php echo $sensor_row['dev_value_3'];?> % Luftfeuchtigkeit</p>
+          <?php if($row['value_1'] != "") {?> 
+            <p class="card-text"><?php echo $sensor_row['dev_value_1']." ".$row['value_1'];?></p>
+          <?php } ?>
+
+          <?php if($row['value_2'] != "") {?> 
+            <p class="card-text"><?php echo $sensor_row['dev_value_2']." ".$row['value_2'];?></p>
+          <?php } ?>
+          <?php if($row['value_2'] != "") {?> 
+            <p class="card-text"><?php echo $sensor_row['dev_value_3']." ".$row['value_3'];?></p>
+          <?php } ?>
+          
       </div>
       <div class="card-footer">
         <small class="text-body-secondary">Letztes Update <?php echo $sensor_row["datetime"]; ?></small>
