@@ -34,6 +34,23 @@ $devices = mysqli_query($db_connect, "Select * from sensor");
   </form>
 </div>
 
+<script>
+  const urlParams = new URL(window.location.toLocaleString()).searchParams;
+  var date = urlParams.get('date');
+  var device = urlParams.get('device-select');
+  if(date != null) {
+      document.getElementById('date').value = date;
+  } else {
+      document.getElementById('date').valueAsDate = new Date();
+      location.href = location.href + "?date=" + new Date().toISOString().slice(0, 10);
+  }
+  if(device != null) {
+      document.getElementById(device).setAttribute('selected', 'selected');
+  } else {
+      document.getElementById('choose').setAttribute('selected', 'selected');
+  }
+
+</script>
 
 <div>
   <canvas id="chartDaily"></canvas>
@@ -55,8 +72,6 @@ if (mysqli_num_rows($query) > 0) {
 $finaltemps1 =  rtrim($temp1, ", ");
 $finaltemps2 =  rtrim($temp2, ", ");
 $finalhum =  rtrim($hum, ", ");
-$finaldates = rtrim($dates, ", ");
-
 
 $sensorvalues = mysqli_query($db_connect, "Select * from sensor WHERE dev_id='$dev_id'");
 $sensorrow = mysqli_fetch_assoc($sensorvalues);
@@ -86,19 +101,6 @@ function checkInput() {
 
 
 
-const urlParams = new URL(window.location.toLocaleString()).searchParams;
-var date = urlParams.get('date');
-var device = urlParams.get('device-select');
-if(date != null) {
-    document.getElementById('date').value = date;
-} else {
-    document.getElementById('date').valueAsDate = new Date();
-}
-if(device != null) {
-    document.getElementById(device).setAttribute('selected', 'selected');
-} else {
-    document.getElementById('choose').setAttribute('selected', 'selected');
-}
 
   const ctx = document.getElementById('chartDaily');
 
