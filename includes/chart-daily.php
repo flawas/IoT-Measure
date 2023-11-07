@@ -108,15 +108,15 @@ function checkInput() {
     type: 'line',
     data: {
       datasets: [{
-        label: '<?php echo $sensorrow['value_1']; ?>',
+        label: '<?php echo $sensorrow['value_1_name']; ?>',
         data: [<?php echo $finaltemps1;?>],
         borderWidth: 1,
       },{
-        label: '<?php echo $sensorrow['value_2']; ?>',
+        label: '<?php echo $sensorrow['value_2_name']; ?>',
         data: [<?php echo $finaltemps2;?>],
         borderWidth: 1,
       }, {
-        label: '<?php echo $sensorrow['value_3']; ?>',
+        label: '<?php echo $sensorrow['value_3_name']; ?>',
         data: [<?php echo $finalhum;?>],
         borderWidth: 1,
       } , {
