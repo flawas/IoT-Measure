@@ -4,81 +4,30 @@
 require '../config.php';
 
 // Create connection
-$db_connect = mysqli_connect(DATABASE_HOST, DATABASE_USERNAME, DATABASE_PASSWORD, DATABASE_NAME) or die(mysql_error());
+$db_connect = new mysqli(DATABASE_HOST, DATABASE_USERNAME, DATABASE_PASSWORD, DATABASE_NAME);
 
+$endDeviceID = $_POST['endDeviceID'];
+$endDevicePlace = $_POST['endDevicePlace'];
+$endDeviceType = $_POST['endDeviceType'];
+$endDeviceManufacturer = $_POST['endDeviceManufacturer'];
+$endDeviceModel = $_POST['endDeviceModel'];
+$endDeviceModelValue1 = $_POST['endDeviceModelValue1'];
+$endDeviceModelValueName1 = $_POST['endDeviceModelValueName1'];
+$endDeviceModelValue2 = $_POST['endDeviceModelValue2'];
+$endDeviceModelValueName2 = $_POST['endDeviceModelValueName2'];
+$endDeviceModelValue3 = $_POST['endDeviceModelValue3'];
+$endDeviceModelValueName3 = $_POST['endDeviceModelValueName3'];
 
-$check = true;
-
-if(!(isset($_POST['endDeviceID']))){
-  $check = false;
-}
-
-if($_POST['endDeviceID'] == ""){
-  $check = false;
-}
-
-if(!(isset($_POST['endDevicePlace']))){
-  $check = false;
-}
-
-if($_POST['endDevicePlace'] == ""){
-  $check = false;
-}
-
-if(!(isset($_POST['endDeviceType']))){
-  $check = false;
-}
-
-if($_POST['endDeviceType'] == ""){
-  $check = false;
-}
-
-if(!(isset($_POST['endDeviceManufacturer']))){
-  $check = false;
-}
-
-if($_POST['endDeviceManufacturer'] == ""){
-  $check = false;
-}
-
-if(!(isset($_POST['endDeviceModel']))){
-  $check = false;
-}
-
-if($_POST['endDeviceModel'] == ""){
-  $check = false;
-}
-
-
-
-if($check === TRUE) {
-
-
-  $endDeviceID = $_POST['endDeviceID'];
-  $endDevicePlace = $_POST['endDevicePlace'];
-  $endDeviceType = $_POST['endDeviceType'];
-  $endDeviceManufacturer = $_POST['endDeviceManufacturer'];
-  $endDeviceModel = $_POST['endDeviceModel'];
-
-  $sql = "INSERT INTO sensor (dev_id, dev_place, dev_type, dev_brand, dev_model)
-  VALUES ('$endDeviceID', '$endDevicePlace', '$endDeviceType', '$endDeviceManufacturer', '$endDeviceModel')";
-
-} else {
-  header('Location: ../device-add.php?text=Fehler im Formular. Sensor wurde nicht hinzugefügt!&status=error');
-  die();
-}
+$sql = ("INSERT INTO `sensor` (`id`, `dev_id`, `dev_place`, `dev_type`, `dev_brand`, `dev_model`, `value_1`, `value_1_name`, `value_2`, `value_2_name`, `value_3`, `value_3_name`, 
+  `displayWeather`) VALUES (NULL, '$endDeviceID', '$endDevicePlace', 'endDeviceType', 'endDeviceManufacturer', 'endDeviceModel', '$endDeviceModelValue1', 
+  '$endDeviceModelValueName1', '$endDeviceModelValue2', '$endDeviceModelValueName2','$endDeviceModelValue3', '$endDeviceModelValueName3', NULL);");
 
 if ($db_connect->query($sql) === TRUE) {
   echo "New record created successfully";
+  header('Location: ../device-add.php?text=Sensor erfolgreich hinzugefügt!&status=success');
 } else {
-  echo "Error: " . $sql . "<br>" . $db_connect->error;
-  header('Location: ../device-add.php?text=Fehler, Sensor nicht hinzugefügt!&status=error');
-  die();
+  echo "Error: " . $sql . "<br>" . $conn->error;
+  header('Location: ../device-add.php?text=Fehler im Formular. Sensor wurde nicht hinzugefügt!&status=error');
 }
-
-$db_connect->close();
-
-header('Location: ../device-add.php?text=Sensor erfolgreich hinzugefügt!&status=success');
-die();
 
 ?>
