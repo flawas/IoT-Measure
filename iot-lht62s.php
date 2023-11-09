@@ -12,17 +12,18 @@ include_once("includes/functions.php");
 $ttn_post = file('php://input');
 $data = json_decode($ttn_post[0]);
 
+$join_eui = $data->uplink_message->join_eui;
 
-if($data->uplink_message->join_eui = "A000000000000101") {
+if($join_eui == "A000000000000101") {
     $sensor_temperature = $data->uplink_message->decoded_payload->TempC1;
 }
 
-if($data->uplink_message->join_eui = "A000000000000100") {
+if($join_eui == "A000000000000100") {
     $sensor_temperature = $data->uplink_message->decoded_payload->TempC_SHT;
     $sensor_humidity = $data->uplink_message->decoded_payload->Hum_SHT;
     $sensor_temperature_2 = $data->uplink_message->decoded_payload->TempC_DS;
-
 }
+
 $sensor_battery = $data->uplink_message->decoded_payload->BatV;
 $sensor_raw_payload = $data->uplink_message->frm_payload;
 $gtw_id = $data->uplink_message->rx_metadata[0]->gateway_ids->gateway_id;
