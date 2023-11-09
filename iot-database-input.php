@@ -12,30 +12,20 @@ include_once("includes/functions.php");
 $ttn_post = file('php://input');
 $data = json_decode($ttn_post[0]);
 
-$join_eui = $data->uplink_message->join_eui;
-
-if($join_eui == "A000000000000101") {
-    $sensor_temperature = $data->uplink_message->decoded_payload->TempC1;
-}
-
-if($join_eui == "A000000000000100") {
-    $sensor_temperature = $data->uplink_message->decoded_payload->TempC_SHT;
-    $sensor_humidity = $data->uplink_message->decoded_payload->Hum_SHT;
-    $sensor_temperature_2 = $data->uplink_message->decoded_payload->TempC_DS;
-}
-
+$sensor_temperature = $data->uplink_message->decoded_payload->TempC_SHT;
+$sensor_humidity = $data->uplink_message->decoded_payload->Hum_SHT;
+$sensor_temperature_2 = $data->uplink_message->decoded_payload->TempC_DS;
 $sensor_battery = $data->uplink_message->decoded_payload->BatV;
 $sensor_raw_payload = $data->uplink_message->frm_payload;
+
 $gtw_id = $data->uplink_message->rx_metadata[0]->gateway_ids->gateway_id;
 $gtw_rssi = $data->uplink_message->rx_metadata[0]->rssi;
 $gtw_snr = $data->uplink_message->rx_metadata[0]->snr;
-
 $ttn_app_id = $data->end_device_ids->application_ids->application_id;
 $ttn_dev_id = $data->end_device_ids->device_id;
 $ttn_time = $data->received_at;
 
 $db_connect = mysqli_connect(DATABASE_HOST, DATABASE_USERNAME, DATABASE_PASSWORD, DATABASE_NAME) or die(mysql_error());
-
 $server_datetime = date("Y-m-d H:i:s");
 
 mysqli_query($db_connect, "INSERT INTO `data` (`id`, `datetime`, `app_id`, `dev_id`, `ttn_timestamp`, `gtw_id`, `gtw_rssi`,"
