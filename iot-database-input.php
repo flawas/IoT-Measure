@@ -10,41 +10,34 @@ require 'config.php';
 include_once("includes/functions.php");
 
 $ttn_post = file('php://input');
-//$data = json_decode($ttn_post[0]);
+$data = json_decode($ttn_post[0]);
 
-$ttn_post = file_get_contents('ttn.json');
-$json = json_decode($ttn_post, true);
 
-$end_device_ids = $json['data']['end_device_ids'];
-  $ttn_dev_id = $end_device_ids['device_id'];
-  $ttn_app_id = $end_device_ids['application_ids']['application_id'];
+$sensor_battery = $data->uplink_message->decoded_payload->BatV;
+$sensor_raw_payload = $data->uplink_message->frm_payload;
+$gtw_id = $data->uplink_message->rx_metadata[0]->gateway_ids->gateway_id;
+$gtw_rssi = $data->uplink_message->rx_metadata[0]->rssi;
+$gtw_snr = $data->uplink_message->rx_metadata[0]->snr;
 
-$ttn_time = $json['data']['received_at'];
+$ttn_app_id = $data->end_device_ids->application_ids->application_id;
+$ttn_dev_id = $data->end_device_ids->device_id;
+$ttn_time = $data->received_at;
 
-$uplink_message = $json['data']['uplink_message'];
-
-$sensor_battery = $uplink_message['data']['decoded_payload']['BatV'];
-    $sensor_raw_payload = $uplink_message['frm_payload'];
-    $gtw_id = $uplink_message['rx_metadata'][0]['gateway_ids']['gateway_id'];
-    $gtw_rssi = $uplink_message['rx_metadata'][0]['rssi'];
-    $gtw_snr = $uplink_message['rx_metadata'][0]['snr'];
 
 $sensor_temperature = 0;
 $sensor_humidity = 0;
 $sensor_temperature_2 = 0;
 
-print_r($uplink_message['decoded_payload']);
-
-if($join_eui = 'A000000000000101') {
-    
-    $sensor_temperature = $uplink_message['decoded_payload']['TempC1'];
+if($data->end_device_ids->join_eui = 'A000000000000101') {
+  
+  $sensor_temperature = $data->uplink_message->decoded_payload->TempC1;
 
 }
 
-if($join_eui = 'A000000000000100') {
-    $sensor_temperature = $uplink_message['decoded_payload']['TempC_SHT'];
-    $sensor_humidity = $uplink_message['decoded_payload']['Hum_SHT'];
-    $sensor_temperature_2 = $uplink_message['decoded_payload']['TempC_DS'];
+if($data->end_device_ids->join_eui = 'A000000000000100') {
+  $sensor_temperature = $data->uplink_message->decoded_payload->TempC_SHT;
+  $sensor_humidity = $data->uplink_message->decoded_payload->Hum_SHT;
+  $sensor_temperature_2 = $data->uplink_message->decoded_payload->TempC_DS;
 
 }
 
