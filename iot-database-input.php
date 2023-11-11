@@ -13,7 +13,7 @@ $ttn_post = file('php://input');
 //$data = json_decode($ttn_post[0]);
 
 //$ttn_post = file_get_contents('ttn.json');
-$data = json_decode($ttn_post[0], true);
+$data = json_decode($ttn_post, true);
 
 
 $join_eui = $data['identifiers'][0]['device_ids']['join_eui'];
@@ -51,9 +51,6 @@ if($join_eui == "A000000000000100") {
     $ttn_dev_id = $data['data']['end_device_ids']['device_id'];
     $ttn_time = $data['data']['received_at'];
 }
-
-
-
 
 $server_datetime = date("Y-m-d H:i:s");
 
