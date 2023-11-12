@@ -46,7 +46,7 @@ if($dev_id != null && $date != null && $numberOfLogs != null) {
 };
 
 ?>
-
+<div class="table-responsive">
 <table class="table table-hover table-sm text-center">
   <thead>
     <tr>
@@ -72,7 +72,7 @@ foreach ($sqlResponses as $sqlResponse){
 }
 
 ?>
-    
+</div>
     </tbody>
 </table>
 

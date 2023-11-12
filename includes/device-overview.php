@@ -1,15 +1,11 @@
 <?php 
 
 $db_connect = mysqli_connect(DATABASE_HOST, DATABASE_USERNAME, DATABASE_PASSWORD, DATABASE_NAME) or die(mysql_error());
-$devices = mysqli_query($db_connect, "Select * from sensor");
 
-?>
-
-<?php
 $sqlResponses = mysqli_query($db_connect, "SELECT * FROM sensor");
 
 ?>
-
+<div class="table-responsive">
 <table class="table table-hover table-sm text-center">
   <thead>
     <tr>
@@ -37,6 +33,6 @@ foreach ($sqlResponses as $sqlResponse){
 }
 
 ?>
-    
+</div>
     </tbody>
 </table>

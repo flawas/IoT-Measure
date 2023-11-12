@@ -1,4 +1,5 @@
 <?php
+require 'config.php';
 
 function createAlertBadgeURL() {
     $text = $_GET['text'];
@@ -29,9 +30,9 @@ function createAlertBadge($text, $status) {
 }
 
 function slack($txt) {
-    if(SLACK_ENABLED == TRUE) {
+    if(getConfig('SlackEnabled') == 1) {
         $msg = array('text' => $txt);
-        $c = curl_init(SLACK_WEBHOOK);
+        $c = curl_init(getConfig('SlackWebhookURL'));
         curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($c, CURLOPT_POST, true);
@@ -47,15 +48,15 @@ function dbInputSlackNotification($devID, $humidity, $temperature1, $temperature
     $data_row = mysqli_fetch_array($devices);
     echo $data_row['dev_place'];
 
-    if($humidity > SLACK_HUMIDITY_THREESHOLD) {
+    if($humidity > getConfig('SlackThereesholdHum')) {
         slack($data_row['dev_type'] . " ". $data_row['dev_place']. " hat festgestellt, dass die Luftfeuchtigkeit " . $humidity ."% beträgt - Bitte lüften!");
     }
 
-    if($temperature1 > SLACK_TEMPERATURE_THREESHOLD) {
+    if($temperature1 > getConfig('SlackThereesholdTemp')) {
         slack($data_row['dev_type'] . " ". $data_row['dev_place']. " hat festgestellt, dass die Temperatur " . $temperature1 ." Grad Celsius beträgt!");
     }
 
-    if($temperature2 > SLACK_TEMPERATURE_THREESHOLD) {
+    if($temperature2 > getConfig('SlackThereesholdTemp')) {
         slack($data_row['dev_type'] . " ". $data_row['dev_place']. " hat festgestellt, dass die Temperatur " . $temperature2 ." Grad Celsius beträgt!");
     }
 }
@@ -67,6 +68,15 @@ function getStartAndEndDate($week, $year) {
     $dto->modify('+6 days');
     $ret['week_end'] = $dto->format('Y-m-d');
     return $ret;
-}  
+}
+
+function getConfig($searchValue) {
+    $db_connect = mysqli_connect(DATABASE_HOST, DATABASE_USERNAME, DATABASE_PASSWORD, DATABASE_NAME) or die(mysql_error());
+    $sqlResponses = mysqli_query($db_connect, "SELECT * FROM config WHERE configname = '$searchValue'");
+    foreach ($sqlResponses as $sqlResponse){
+        $value = $sqlResponse['value'];
+    }
+    return $value;
+}
 
 ?>

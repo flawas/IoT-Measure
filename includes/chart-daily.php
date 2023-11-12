@@ -99,9 +99,6 @@ function checkInput() {
     return true;
 }
 
-
-
-
   const ctx = document.getElementById('chartDaily');
 
   new Chart(ctx, {

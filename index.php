@@ -2,6 +2,7 @@
 
 require 'config.php';
 include_once("includes/head.php");
+include_once("includes/functions.php");
 
 ?>
 <html>
@@ -18,3 +19,4 @@ include_once("includes/head.php");
 <?php
 include_once("includes/footer.php");
 ?>
+
