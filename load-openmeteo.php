@@ -25,20 +25,54 @@ $humidity = $values["hourly"]["relative_humidity_2m"];
 $arrLength = count($time);
 $sql = "";
 
-// Create connection
-$conn = new mysqli(DATABASE_HOST, DATABASE_USERNAME, DATABASE_PASSWORD, DATABASE_NAME);
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
+
+
+// Check if Data exists
+
 
 for ($i = 0; $i < $arrLength; $i++) {
-    $sql = ("INSERT INTO data_openmeteo (id, datetime, temperature, humidity) VALUES (NULL, '".$time[$i]."', '".$temperature[$i]."', '".$humidity[$i]."');");
-    if ($conn->query($sql) === TRUE) {
-        echo "New record created successfully";
-      } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
-      }
+    echo $i .": ". $time[$i];
+    // Create connection
+    $conn = new mysqli(DATABASE_HOST, DATABASE_USERNAME, DATABASE_PASSWORD, DATABASE_NAME);
+    // Check connection
+    if ($conn->connect_error) {
+      die("Connection failed: " . $conn->connect_error);
+    }
+    $query = "SELECT * FROM data_openmeteo WHERE datetime = '$time[$i]'";
+
+    $result = $conn->query($query);
+
+    if ($result) {
+        if (mysqli_num_rows($result) > 0) {
+            echo ' found!' ."<br>";
+            $sql = ("UPDATE data_openmeteo SET temperature = '$temperature[$i]', humidity = '$humidity[$i]' WHERE datetime = '$time[$i]';");
+            if ($conn->query($sql) === TRUE) {
+              echo "Updated record successfully: ".$time[$i];
+              echo "<br>";
+            } else {
+              echo "Error: " . $sql . "<br>" . $conn->error;
+            }
+        } else {
+            echo ' not found'."<br>";
+            $sql = ("INSERT INTO data_openmeteo (id, datetime, temperature, humidity) VALUES (NULL, '".$time[$i]."', '".$temperature[$i]."', '".$humidity[$i]."');");
+            if ($conn->query($sql) === TRUE) {
+              echo "New record created successfully: ".$time[$i];
+              echo "<br>";
+            } else {
+              echo "Error: " . $sql . "<br>" . $conn->error;
+            }
+        }
+    } else {
+        echo 'Error: ' . mysqli_error();
+    }
+    $conn->close();
+    //$result = $conn->query("Select * from data_openmeteo WHERE datetime = ".$time[$i].";");
+
+
+    /*
+
+    */
+
 }
-$conn->close();
+
 ?>
