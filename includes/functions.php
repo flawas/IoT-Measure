@@ -47,16 +47,16 @@ function dbInputSlackNotification($devID, $humidity, $temperature1, $temperature
     $devices = mysqli_query($db_connect, "Select * from sensor where dev_id='$devID'");
     $data_row = mysqli_fetch_array($devices);
     echo $data_row['dev_place'];
-
-    if($humidity > getConfig('SlackThereesholdHum')) {
+    
+    if($humidity > getConfig('SlackThreesholdHum')) {
         slack($data_row['dev_type'] . " ". $data_row['dev_place']. " hat festgestellt, dass die Luftfeuchtigkeit " . $humidity ."% beträgt - Bitte lüften!");
     }
 
-    if($temperature1 > getConfig('SlackThereesholdTemp')) {
+    if($temperature1 > getConfig('SlackThreesholdTemp')) {
         slack($data_row['dev_type'] . " ". $data_row['dev_place']. " hat festgestellt, dass die Temperatur " . $temperature1 ." Grad Celsius beträgt!");
     }
 
-    if($temperature2 > getConfig('SlackThereesholdTemp')) {
+    if($temperature2 > getConfig('SlackThreesholdTemp')) {
         slack($data_row['dev_type'] . " ". $data_row['dev_place']. " hat festgestellt, dass die Temperatur " . $temperature2 ." Grad Celsius beträgt!");
     }
 }
