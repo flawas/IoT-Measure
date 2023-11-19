@@ -54,12 +54,9 @@ if ($db_connect->query($sql) === TRUE) {
   echo "Error: " . $sql . "<br>" . $conn->error;
 }
 
-if (WRITE_LOG == true) {
+if (getConfig('LogEnabled') == 1) {
     file_put_contents('sqllog.txt', $sql .  PHP_EOL, FILE_APPEND);
     file_put_contents('log.txt', $ttn_post[0] . PHP_EOL, FILE_APPEND);
 }
 
-if(SLACK_ENABLED == TRUE) {
-    dbInputSlackNotification($ttn_dev_id, $sensor_humidity, $sensor_temperature, $sensor_temperature_2);
-}
 ?>
