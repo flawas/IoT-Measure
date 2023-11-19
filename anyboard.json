@@ -18,23 +18,18 @@
     ],
     "dashboards": [
         {
-            "name": "Live data",
+            "name": "IOT Blauweidweg",
             "color": "active",
             "source": {
                 "endpoint": "custom-source",
                 "refresh": 5
-            },
-            "actions": {
-                "sound": "sound = true",
-                "invoke": "switch = true",
-                "invokeTime": "0 0 12 1/1 * ? *"
             },
             "widgets": [
                 {
                     "width": 1,
                     "background": "",
                     "image": {
-                        "url": "https://anyboard.io/img/logo2.png"
+                        "url": "https://iot.flaviowaser.ch/img/motion-sensor.png"
                     }
                 },
                 {
