@@ -1,0 +1,646 @@
+{
+    "name": "Example",
+    "sources": [
+        {
+            "auth": "none",
+            "name": "Source A",
+            "endpoints": [
+                {
+                    "id": "custom-source",
+                    "url": "https://anyboard.io/api/v1.3/data-custom-format.aspx"
+                },
+                {
+                    "id": "general-source",
+                    "url": "https://anyboard.io/api/v1.3/data-general-format.aspx"
+                }
+            ]
+        }
+    ],
+    "dashboards": [
+        {
+            "name": "Live data",
+            "color": "active",
+            "source": {
+                "endpoint": "custom-source",
+                "refresh": 5
+            },
+            "actions": {
+                "sound": "sound = true",
+                "invoke": "switch = true",
+                "invokeTime": "0 0 12 1/1 * ? *"
+            },
+            "widgets": [
+                {
+                    "width": 1,
+                    "background": "",
+                    "image": {
+                        "url": "https://anyboard.io/img/logo2.png"
+                    }
+                },
+                {
+                    "width": 1,
+                    "type": "none"
+                },
+                {
+                    "background": "warning",
+                    "minitable": {
+                        "title": "This dashboard invokes:",
+                        "columns": [
+                            {
+                                "id": "text"
+                            }
+                        ],
+                        "data": [
+                            {
+                                "text": "- every minute"
+                            },
+                            {
+                                "text": "- every day at 12PM"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "width": 3,
+                    "height": 4,
+                    "table": {
+                        "columns": [
+                            {
+                                "id": "server",
+                                "title": "Server",
+                                "style": "bold",
+                                "flex": 2
+                            },
+                            {
+                                "id": "check",
+                                "title": "Last check",
+                                "type": "date",
+                                "format": "HH:mm:ss"
+                            },
+                            {
+                                "id": "total",
+                                "title": "Total",
+                                "align": "right"
+                            },
+                            {
+                                "id": "free",
+                                "title": "Free %",
+                                "style": "bold",
+                                "format": ".1",
+                                "align": "right",
+                                "calc": "((total - used) / total) * 100"
+                            },
+                            {
+                                "id": "indicator",
+                                "type": "indicator",
+                                "colors": {
+                                    "danger": "free<20",
+                                    "warning": "free<40"
+                                }
+                            }
+                        ]
+                    },
+                    "source": {
+                        "endpoint": "general-source",
+                        "mapping": {
+                            "data[].server": "servers[].server",
+                            "data[].check": "servers[].check",
+                            "data[].total": "servers[].total",
+                            "data[].used": "servers[].used"
+                        }
+                    }
+                },
+                {
+                    "type": "basic",
+                    "source": {
+                        "endpoint": "general-source",
+                        "mapping": {
+                            "subtitle": "processes.3.name",
+                            "value": "processes.3.status"
+                        }
+                    }
+                },
+                {
+                    "type": "basic",
+                    "source": {
+                        "endpoint": "general-source",
+                        "mapping": {
+                            "subtitle": "processes[4].name",
+                            "value": "processes[4].status"
+                        }
+                    }
+                },
+                {
+                    "minitable": {
+                        "columns": [
+                            {
+                                "id": "name",
+                                "flex": 2
+                            },
+                            {
+                                "id": "value",
+                                "style": "bold",
+                                "align": "right"
+                            }
+                        ]
+                    },
+                    "source": {
+                        "endpoint": "general-source",
+                        "mapping": {
+                            "data[].name": "processes[].name",
+                            "data[].value": "processes[].status"
+                        }
+                    }
+                },
+                {
+                    "id": "virus-check",
+                    "basic": {
+                        "title": "Virus check",
+                        "unit": "%"
+                    }
+                },
+                {
+                    "id": "procedures",
+                    "basic": {
+                        "title": "Procedures",
+                        "unit": "%"
+                    }
+                },
+                {
+                    "id": "routines",
+                    "basic": {
+                        "title": "Routines"
+                    }
+                },
+                {
+                    "id": "users",
+                    "basic": {
+                        "title": "Active users"
+                    }
+                },
+                {
+                    "id": "process",
+                    "basic": {
+                        "title": "Main process",
+                        "value": "OK",
+                        "subtitle": "14:21:21"
+                    }
+                },
+                {
+                    "chart": {
+                        "title": "Visits",
+                        "series": [
+                            {
+                                "id": "visits",
+                                "type": "bar",
+                                "color": "warning"
+                            }
+                        ],
+                        "data": []
+                    },
+                    "source": {
+                        "endpoint": "general-source",
+                        "mapping": {
+                            "data[].x": "visits[].hour",
+                            "data[].visits": "visits[].count"
+                        }
+                    }
+                },
+                {
+                    "id": "server-chart",
+                    "width": 6,
+                    "height": 2,
+                    "chart": {
+                        "title": "Server status",
+                        "legend": true,
+                        "xAxis": {
+                            "visible": true,
+                            "labels": true
+                        },
+                        "yLeftAxis": {
+                            "visible": true,
+                            "labels": true,
+                            "min": 0,
+                            "max": 100
+                        },
+                        "yRightAxis": {
+                            "visible": true,
+                            "labels": true,
+                            "min": 0,
+                            "max": 2000
+                        },
+                        "series": [
+                            {
+                                "id": "load",
+                                "name": "Load (%)",
+                                "type": "line",
+                                "color": "#ff6131",
+                                "axis": "left",
+                                "valueLabels": false
+                            },
+                            {
+                                "id": "memory",
+                                "name": "Memory used (MB)",
+                                "type": "bar",
+                                "color": "#3d89ba",
+                                "axis": "right",
+                                "valueLabels": false
+                            }
+                        ],
+                        "data": []
+                    },
+                    "source": {
+                        "endpoint": "custom-source"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Basic",
+            "color": "fuzy",
+            "widgets": [
+                {
+                    "type": "time"
+                },
+                {
+                    "background": "danger",
+                    "color": "#eeeeee",
+                    "basic": {
+                        "subtitle": "red alert",
+                        "value": "150"
+                    }
+                },
+                {
+                    "basic": {
+                        "subtitle": "simple value",
+                        "value": "673"
+                    }
+                },
+                {
+                    "basic": {
+                        "title": "SOME TITLE",
+                        "subtitle": "description",
+                        "value": "125.31"
+                    }
+                },
+                {
+                    "chart": {
+                        "title": "Bar chart",
+                        "legend": false,
+                        "series": [
+                            {
+                                "name": "Critical",
+                                "type": "bar",
+                                "color": "#0fc666",
+                                "data": [
+                                    {
+                                        "x": "Jun",
+                                        "y": 3
+                                    },
+                                    {
+                                        "x": "Jul",
+                                        "y": 5
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "Warning",
+                                "type": "bar",
+                                "color": "#e4a60f",
+                                "data": [
+                                    {
+                                        "x": "Jun",
+                                        "y": 4
+                                    },
+                                    {
+                                        "x": "Jul",
+                                        "y": 6
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                },
+                {
+                    "background": "active",
+                    "basic": {
+                        "title": "Active",
+                        "value": "176"
+                    }
+                },
+                {
+                    "minitable": {
+                        "title": "Mini table",
+                        "columns": [
+                            {
+                                "id": "name"
+                            },
+                            {
+                                "id": "value",
+                                "align": "right",
+                                "style": "bold"
+                            }
+                        ],
+                        "data": [
+                            {
+                                "name": "Success",
+                                "value": "80"
+                            },
+                            {
+                                "name": "Error",
+                                "value": "-"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "basic": {
+                        "subtitle": "value with unit",
+                        "value": "563",
+                        "unit": "kWh"
+                    }
+                },
+                {
+                    "background": "active",
+                    "basic": {
+                        "subtitle": "percentual",
+                        "value": "76",
+                        "progress": 76,
+                        "unit": "%"
+                    }
+                },
+                {
+                    "width": 2,
+                    "chart": {
+                        "title": "Line chart",
+                        "legend": false,
+                        "series": [
+                            {
+                                "name": "Critical",
+                                "type": "line",
+                                "color": "#0fc666",
+                                "data": [
+                                    {
+                                        "x": "Jun",
+                                        "y": 3
+                                    },
+                                    {
+                                        "x": "Jul",
+                                        "y": 5
+                                    },
+                                    {
+                                        "x": "Aug",
+                                        "y": 4
+                                    },
+                                    {
+                                        "x": "Sep",
+                                        "y": 7
+                                    },
+                                    {
+                                        "x": "Okt",
+                                        "y": 6
+                                    },
+                                    {
+                                        "x": "Nov",
+                                        "y": 8
+                                    },
+                                    {
+                                        "x": "Dec",
+                                        "y": 6
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "Warning",
+                                "type": "line",
+                                "color": "#e4a60f",
+                                "data": [
+                                    {
+                                        "x": "Jun",
+                                        "y": 4
+                                    },
+                                    {
+                                        "x": "Jul",
+                                        "y": 6
+                                    },
+                                    {
+                                        "x": "Aug",
+                                        "y": 2
+                                    },
+                                    {
+                                        "x": "Sep",
+                                        "y": 1
+                                    },
+                                    {
+                                        "x": "Okt",
+                                        "y": 9
+                                    },
+                                    {
+                                        "x": "Okt",
+                                        "y": 4
+                                    },
+                                    {
+                                        "x": "Nov",
+                                        "y": 3
+                                    },
+                                    {
+                                        "x": "Dec",
+                                        "y": 3
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                },
+                {
+                    "background": "success",
+                    "basic": {
+                        "title": "Success",
+                        "value": "1 320"
+                    }
+                },
+                {
+                    "width": 2,
+                    "height": 4,
+                    "table": {
+                        "title": "List",
+                        "columns": [
+                            {
+                                "id": "name",
+                                "flex": 2
+                            },
+                            {
+                                "id": "value",
+                                "align": "right"
+                            },
+                            {
+                                "id": "indicator",
+                                "type": "indicator"
+                            }
+                        ],
+                        "data": [
+                            {
+                                "name": "Success",
+                                "value": "1 320"
+                            },
+                            {
+                                "indicator": "warning",
+                                "name": "Warning",
+                                "value": "18"
+                            },
+                            {
+                                "indicator": "danger",
+                                "name": "Danger",
+                                "value": "2"
+                            },
+                            {
+                                "name": "Fuzy",
+                                "value": "592"
+                            },
+                            {
+                                "name": "Neutral",
+                                "value": "76"
+                            },
+                            {
+                                "name": "Active",
+                                "value": "86"
+                            },
+                            {
+                                "name": "Info",
+                                "value": "11"
+                            },
+                            {
+                                "name": "Other",
+                                "value": "0"
+                            },
+                            {
+                                "background": "#22000000",
+                                "name": "Total",
+                                "value": "2 105"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "width": 3,
+                    "height": 4,
+                    "table": {
+                        "title": "Table",
+                        "columns": [
+                            {
+                                "id": "name",
+                                "flex": 2
+                            },
+                            {
+                                "id": "col2",
+                                "align": "right",
+                                "color": "#777777"
+                            },
+                            {
+                                "id": "col3",
+                                "align": "right",
+                                "color": "#777777"
+                            },
+                            {
+                                "id": "value",
+                                "style": "bold",
+                                "align": "right"
+                            }
+                        ],
+                        "data": [
+                            {
+                                "name": "Success",
+                                "col2": "16",
+                                "col3": "58",
+                                "value": "1 320"
+                            },
+                            {
+                                "indicator": "warning",
+                                "name": "Warning",
+                                "col2": "16",
+                                "col3": "58",
+                                "value": "18"
+                            },
+                            {
+                                "indicator": "danger",
+                                "name": "Danger",
+                                "col2": "16",
+                                "col3": "58",
+                                "value": "2"
+                            },
+                            {
+                                "name": "Fuzy",
+                                "col2": "16",
+                                "col3": "58",
+                                "value": "592"
+                            },
+                            {
+                                "name": "Neutral",
+                                "col2": "16",
+                                "col3": "58",
+                                "value": "76"
+                            },
+                            {
+                                "name": "Active",
+                                "col2": "16",
+                                "col3": "58",
+                                "value": "86"
+                            },
+                            {
+                                "name": "Info",
+                                "col2": "16",
+                                "col3": "58",
+                                "value": "11"
+                            },
+                            {
+                                "name": "Other",
+                                "col2": "16",
+                                "col3": "58",
+                                "value": "0"
+                            },
+                            {
+                                "background": "#22000000",
+                                "name": "Total",
+                                "col2": "16",
+                                "col3": "58",
+                                "value": "2 105"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "id": "thirteen",
+                    "background": "warning",
+                    "basic": {
+                        "title": "Warning",
+                        "value": "18"
+                    }
+                },
+                {
+                    "id": "fourteen",
+                    "background": "danger",
+                    "basic": {
+                        "title": "Danger",
+                        "value": "2"
+                    }
+                },
+                {
+                    "id": "fifteen",
+                    "background": "fuzy",
+                    "basic": {
+                        "title": "Fuzy",
+                        "value": "592"
+                    }
+                },
+                {
+                    "id": "sixteen",
+                    "background": "neutral",
+                    "basic": {
+                        "title": "Neutral",
+                        "value": "76"
+                    }
+                }
+            ]
+        }
+    ]
+}
