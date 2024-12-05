@@ -41,7 +41,7 @@ if($data->end_device_ids->join_eui == 'A000000000000100') {
 if($data->end_device_ids->join_eui == '0000000000000000'){
     $sensor_temperature = $data->uplink_message->decoded_payload->temperature;
     $sensor_humidity = $data->uplink_message->decoded_payload->humidity;
-    $sensor_temperature_2 = $data->uplink_message->decoded_payload->soilMoisture;
+    $sensor_soilMoisture = $data->uplink_message->decoded_payload->soilMoisture;
 }
 
 $server_datetime = date("Y-m-d H:i:s");
