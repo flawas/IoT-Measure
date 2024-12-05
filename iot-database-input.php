@@ -38,12 +38,18 @@ if($data->end_device_ids->join_eui == 'A000000000000100') {
   $sensor_temperature_2 = $data->uplink_message->decoded_payload->TempC_DS;
 }
 
+if($data->end_device_ids->join_eui == '0000000000000000'){
+    $sensor_temperature = $data->uplink_message->decoded_payload->temperature;
+    $sensor_humidity = $data->uplink_message->decoded_payload->humidity;
+    $sensor_soilMoisture = $data->uplink_message->decoded_payload->soilMoisture;
+}
+
 $server_datetime = date("Y-m-d H:i:s");
 
 $sql = ("INSERT INTO `data` (`id`, `datetime`, `app_id`, `dev_id`, `ttn_timestamp`, `gtw_id`, `gtw_rssi`,"
-. " `gtw_snr`, `dev_raw_payload`, `dev_value_1`, `dev_value_2`, `dev_value_3`, `dev_value_4`) "
+. " `gtw_snr`, `dev_raw_payload`, `dev_value_1`, `dev_value_2`, `dev_value_3`, `dev_value_4`, `dev_value_5`) "
 . "VALUES (NULL, '$server_datetime', '$ttn_app_id', '$ttn_dev_id', '$ttn_time', '$gtw_id', '$gtw_rssi', '$gtw_snr',"
-. " '$sensor_raw_payload', '$sensor_temperature', '$sensor_temperature_2', '$sensor_humidity', '$sensor_battery');");
+. " '$sensor_raw_payload', '$sensor_temperature', '$sensor_temperature_2', '$sensor_humidity', '$sensor_battery', '$sensor_soilMoisture');");
 echo "<br>";
 echo $sql;
 $db_connect = new mysqli(DATABASE_HOST, DATABASE_USERNAME, DATABASE_PASSWORD, DATABASE_NAME);
