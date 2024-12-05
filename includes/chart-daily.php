@@ -60,18 +60,20 @@ $devices = mysqli_query($db_connect, "Select * from sensor");
 $dev_id = $_GET['device-select'];
 $today = $_GET['date'];
 
-$query = mysqli_query($db_connect, "SELECT datetime, dev_value_2 as temp1, dev_value_1 as temp2, dev_value_3 as hum FROM data where datetime like '$today%' and dev_id='$dev_id'");
+$query = mysqli_query($db_connect, "SELECT datetime, dev_value_2 as temp1, dev_value_1 as temp2, dev_value_3 as hum, dev_value_5 as soil FROM data where datetime like '$today%' and dev_id='$dev_id'");
 if (mysqli_num_rows($query) > 0) {
   // output data of each row
   while($row = mysqli_fetch_assoc($query)) {
-    $temp1 .= "{x: '".$row["datetime"]."', y: ".$row["temp1"]."},";
-    $temp2 .= "{x: '".$row["datetime"]."', y: ".$row["temp2"]."},";
-    $hum .= "{x: '".$row["datetime"]."', y: ".$row["hum"]."},";
+    $temp1  .= "{x: '".$row["datetime"]."', y: ".$row["temp1"]."},";
+    $temp2  .= "{x: '".$row["datetime"]."', y: ".$row["temp2"]."},";
+    $hum    .= "{x: '".$row["datetime"]."', y: ".$row["hum"]."},";
+    $soil   .= "{x: '".$row["datetime"]."', y: ".$row["soil"]."},";
   }
 }
 $finaltemps1 =  rtrim($temp1, ", ");
 $finaltemps2 =  rtrim($temp2, ", ");
 $finalhum =  rtrim($hum, ", ");
+$finalsoil =  rtrim($soil, ", ");
 
 $sensorvalues = mysqli_query($db_connect, "Select * from sensor WHERE dev_id='$dev_id'");
 $sensorrow = mysqli_fetch_assoc($sensorvalues);
@@ -116,7 +118,11 @@ function checkInput() {
         label: '<?php echo $sensorrow['value_3_name']; ?>',
         data: [<?php echo $finalhum;?>],
         borderWidth: 1,
-      } , {
+      }, {
+          label: '<?php echo $sensorrow['value_5_name']; ?>',
+          data: [<?php echo $finalsoil;?>],
+          borderWidth: 1,
+      }, {
         label: 'Wettervorhersage Temperatur',
         data: [<?php echo $forecasttemp;?>],
         borderWidth: 1,

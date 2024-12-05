@@ -36,6 +36,9 @@ foreach ($result as $row){
           <?php if($row['value_2'] != "") {?> 
             <p class="card-text"><?php echo $sensor_row['dev_value_3']." ".$row['value_3'];?></p>
           <?php } ?>
+            <?php if($row['value_5'] != "") {?>
+                <p class="card-text"><?php echo $sensor_row['dev_value_5']." ".$row['value_5'];?></p>
+            <?php } ?>
           
       </div>
       <div class="card-footer">
