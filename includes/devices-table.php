@@ -58,6 +58,7 @@ if($dev_id != null && $date != null && $numberOfLogs != null) {
       <th>Device Value 2 (Temp.)</th>
       <th>Device Value 3 (Hum.)</th>
       <th>Device Value 4 (Batt.)</th>
+      <th>Device Value 5 (Soil)</th>
     </tr>
   </thead>
   <tbody>
@@ -67,7 +68,8 @@ foreach ($sqlResponses as $sqlResponse){
   ?> 
   <tr><th><?php echo $sqlResponse['id'];?></th><td><?php echo $sqlResponse['datetime'];?></td><td><?php echo $sqlResponse['app_id'];?></td>
   <td><?php echo $sqlResponse['dev_id'];?></td><td><?php echo $sqlResponse['dev_value_1'];?></td>
-  <td><?php echo $sqlResponse['dev_value_2'];?></td><td><?php echo $sqlResponse['dev_value_3'];?></td><td><?php echo $sqlResponse['dev_value_4'];?></td></tr>
+  <td><?php echo $sqlResponse['dev_value_2'];?></td><td><?php echo $sqlResponse['dev_value_3'];?></td><td><?php echo $sqlResponse['dev_value_4'];?></td>
+      <td><?php echo $sqlResponse['dev_value_5'];?></td><</tr>
   <?php 
 }
 
