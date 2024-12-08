@@ -1,54 +1,57 @@
 <div class="container text-center">
-  <div class="row row-cols-1 row-cols-md-3">
+    <div class="row row-cols-1 row-cols-md-3">
 
-<?php 
+        <?php
 
-$db_connect = mysqli_connect(DATABASE_HOST, DATABASE_USERNAME, DATABASE_PASSWORD, DATABASE_NAME) or die(mysql_error());
-$today = date("Y-m-d");
+        $db_connect = new mysqli(DATABASE_HOST, DATABASE_USERNAME, DATABASE_PASSWORD, DATABASE_NAME);
+        if ($db_connect->connect_error) {
+            die("Connection failed: " . $db_connect->connect_error);
+        }
 
-$device_data = mysqli_query($db_connect, "select * from sensor");
-$device_row = mysqli_fetch_array($device_data);
-$device_cnt = mysqli_num_rows($device_data);
+        $today = date("Y-m-d");
 
-// Alle Sensoren ausgeben
-$sql = "select * from sensor";
-$result = $db_connect->query($sql)->fetch_all(MYSQLI_ASSOC);
+        $sql = "SELECT * FROM sensor";
+        $result = $db_connect->query($sql);
 
-foreach ($result as $row){
-  $row_device_id = $row['dev_id'];
-  // Sensor-Daten abfragen
-  $sensor_data = mysqli_query($db_connect, "select * from data where dev_id='$row_device_id' order by id DESC limit 1");
-  $sensor_row = mysqli_fetch_array($sensor_data);
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $row_device_id = $row['dev_id'];
+                $sensor_data = $db_connect->prepare("SELECT * FROM data WHERE dev_id=? ORDER BY id DESC LIMIT 1");
+                $sensor_data->bind_param("s", $row_device_id);
+                $sensor_data->execute();
+                $sensor_row = $sensor_data->get_result()->fetch_assoc();
+                $sensor_data->close();
+                ?>
+                <div class="col-sm-6 md-4 mb-3">
+                    <div class="card">
+                        <div class="card-header"><?php echo htmlspecialchars($row['dev_type']); ?></div>
+                        <div class="card-body">
+                            <h5 class="card-title"><?php echo htmlspecialchars($row['dev_place']); ?></h5>
+                            <?php if ($row['value_1'] != "") { ?>
+                                <p class="card-text"><?php echo htmlspecialchars($sensor_row['dev_value_1'] . " " . $row['value_1']); ?></p>
+                            <?php } ?>
+                            <?php if ($row['value_2'] != "") { ?>
+                                <p class="card-text"><?php echo htmlspecialchars($sensor_row['dev_value_2'] . " " . $row['value_2']); ?></p>
+                            <?php } ?>
+                            <?php if ($row['value_3'] != "") { ?>
+                                <p class="card-text"><?php echo htmlspecialchars($sensor_row['dev_value_3'] . " " . $row['value_3']); ?></p>
+                            <?php } ?>
+                            <?php if ($row['value_5'] != "") { ?>
+                                <p class="card-text"><?php echo htmlspecialchars($sensor_row['dev_value_5'] . " " . $row['value_5']); ?></p>
+                            <?php } ?>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-body-secondary">Letztes Update <?php echo htmlspecialchars($sensor_row["datetime"]); ?></small>
+                        </div>
+                    </div>
+                </div>
+                <?php
+            }
+        } else {
+            echo "No sensors found.";
+        }
+        $db_connect->close();
+        ?>
 
-  ?>
-  <div class="col-sm-6 md-4 mb-3">
-    <div class="card ">
-      <div class="card-header"><?php echo $row['dev_type'];?></div>
-        <div class="card-body">
-          <h5 class="card-title"><?php echo $row['dev_place'];?></h5>
-          <?php if($row['value_1'] != "") {?> 
-            <p class="card-text"><?php echo $sensor_row['dev_value_1']." ".$row['value_1'];?></p>
-          <?php } ?>
-
-          <?php if($row['value_2'] != "") {?> 
-            <p class="card-text"><?php echo $sensor_row['dev_value_2']." ".$row['value_2'];?></p>
-          <?php } ?>
-          <?php if($row['value_2'] != "") {?> 
-            <p class="card-text"><?php echo $sensor_row['dev_value_3']." ".$row['value_3'];?></p>
-          <?php } ?>
-            <?php if($row['value_5'] != "") {?>
-                <p class="card-text"><?php echo $sensor_row['dev_value_5']." ".$row['value_5'];?></p>
-            <?php } ?>
-          
-      </div>
-      <div class="card-footer">
-        <small class="text-body-secondary">Letztes Update <?php echo $sensor_row["datetime"]; ?></small>
-      </div>
     </div>
-  </div>
-<?php 
-}
-?>
-
-  </div>
 </div>
