@@ -3,8 +3,8 @@
 
 <?php
 
-$db_connect = mysqli_connect(DATABASE_HOST, DATABASE_USERNAME, DATABASE_PASSWORD, DATABASE_NAME) or die(mysql_error());
-$devices = mysqli_query($db_connect, "Select * from sensor");
+$db_connect = mysqli_connect(DATABASE_HOST, DATABASE_USERNAME, DATABASE_PASSWORD, DATABASE_NAME) or die(mysqli_error($db_connect));
+$devices = mysqli_query($db_connect, "SELECT * FROM sensor");
 
 ?>
 <div class="container text-center">
@@ -16,14 +16,14 @@ $devices = mysqli_query($db_connect, "Select * from sensor");
             </div>
             <div class="col-8">
                 <select class="form-select" name="device-select" id="device-select">
-                    <option name="choose" id="choose" value="choose" >Bitte wählen</option>
+                    <option name="choose" id="choose" value="choose">Bitte wählen</option>
                     <?php
                     foreach ($devices as $row){
                         ?><option name="<?php echo $row['dev_id']; ?>" value="<?php echo $row['dev_id']; ?>" id="<?php echo $row['dev_id']; ?>"><?php echo $row['dev_place']; ?></option><?php
                     }
                     ?>
                 </select>
-                <label for="device-select" id="device-select-label"class="form-text">Sensor</label>
+                <label for="device-select" id="device-select-label" class="form-text">Sensor</label>
             </div>
             <div class="col-2">
                 <input class="btn btn-secondary" type='submit' name="submit" value='Anzeigen'>
@@ -47,7 +47,6 @@ $devices = mysqli_query($db_connect, "Select * from sensor");
     } else {
         document.getElementById('choose').setAttribute('selected', 'selected');
     }
-
 </script>
 
 <div>
@@ -58,7 +57,7 @@ $devices = mysqli_query($db_connect, "Select * from sensor");
 $dev_id = $_GET['device-select'];
 $today = $_GET['date'];
 
-$query = mysqli_query($db_connect, "SELECT datetime, dev_value_2 as temp1, dev_value_1 as temp2, dev_value_3 as hum, dev_value_5 as soil FROM data where datetime like '$today%' and dev_id='$dev_id'");
+$query = mysqli_query($db_connect, "SELECT datetime, dev_value_2 as temp1, dev_value_1 as temp2, dev_value_3 as hum, dev_value_5 as soil FROM data WHERE datetime LIKE '$today%' AND dev_id='$dev_id'");
 $temp1 = $temp2 = $hum = $soil = "";
 if (mysqli_num_rows($query) > 0) {
     while($row = mysqli_fetch_assoc($query)) {
@@ -73,10 +72,10 @@ $finaltemps2 =  rtrim($temp2, ", ");
 $finalhum =  rtrim($hum, ", ");
 $finalsoil =  rtrim($soil, ", ");
 
-$sensorvalues = mysqli_query($db_connect, "Select * from sensor WHERE dev_id='$dev_id'");
+$sensorvalues = mysqli_query($db_connect, "SELECT * FROM sensor WHERE dev_id='$dev_id'");
 $sensorrow = mysqli_fetch_assoc($sensorvalues);
 
-$forecast = mysqli_query($db_connect, "SELECT datetime, temperature as forecasttemp, humidity as forecasthum FROM data_openmeteo where datetime like '$today%'");
+$forecast = mysqli_query($db_connect, "SELECT datetime, temperature as forecasttemp, humidity as forecasthum FROM data_openmeteo WHERE datetime LIKE '$today%'");
 $forecasttemp = $forecasthum = "";
 if (mysqli_num_rows($forecast) > 0) {
     while($row = mysqli_fetch_assoc($forecast)) {
