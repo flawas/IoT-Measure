@@ -77,7 +77,7 @@ $weekend = ($weekresult["week_end"]);
 $dev_id = $_GET['device-select'];
 
 if(isset($week)) {
-  $sql = "SELECT datetime, dev_value_2 as temp1, dev_value_1 as temp2, dev_value_3 as hum FROM data where datetime BETWEEN '$weekstart 00:00:00' AND '$weekend 23:59:00' AND dev_id='$dev_id'";
+  $sql = "SELECT datetime, dev_value_2 as temp1, dev_value_1 as temp2, dev_value_3, dev_value_5 as soil as hum FROM data where datetime BETWEEN '$weekstart 00:00:00' AND '$weekend 23:59:00' AND dev_id='$dev_id'";
   $query = mysqli_query($db_connect, $sql);
 }
 
@@ -89,12 +89,13 @@ if (mysqli_num_rows($query) > 0) {
     $temp1 .= "{x: '".$row["datetime"]."', y: ".$row["temp1"]."},";
     $temp2 .= "{x: '".$row["datetime"]."', y: ".$row["temp2"]."},";
     $hum .= "{x: '".$row["datetime"]."', y: ".$row["hum"]."},";
+    $soil   .= "{x: '".$row["datetime"]."', y: ".$row["soil"]."},";
   }
 }
 $finaltemps1 =  rtrim($temp1, ", ");
 $finaltemps2 =  rtrim($temp2, ", ");
 $finalhum =  rtrim($hum, ", ");
-
+$finalsoil =  rtrim($soil, ", ");
 
 $sensorvalues = mysqli_query($db_connect, "Select * from sensor WHERE dev_id='$dev_id'");
 $sensorrow = mysqli_fetch_assoc($sensorvalues);
@@ -135,6 +136,10 @@ if (mysqli_num_rows($forecast) > 0) {
         data: [<?php echo $finalhum;?>],
         borderWidth: 1,
       }, {
+          label: '<?php echo $sensorrow['value_5_name']; ?>',
+          data: [<?php echo $finalsoil;?>],
+          borderWidth: 1,
+      },{
         label: 'Wettervorhersage Temperatur',
         data: [<?php echo $forecasttemp;?>],
         borderWidth: 1,
